@@ -29,7 +29,7 @@
                 <th>Payment Status</th>
             </tr>
 
-            <jsp:useBean id="A" class="com.mycompany.clinicdb.Appointments" scope="session"/>
+            <jsp:useBean id="A" class="com.mycompany.clinicdb.Appointments" scope="page"/>
             
             <%
                 String category = request.getParameter("category");

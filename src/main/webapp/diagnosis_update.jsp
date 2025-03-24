@@ -26,12 +26,10 @@
                     <input type="hidden" name="diagnosis_id" value="<%= diag.diagnosis_id %>">
                     <p>Appointment ID: <%= diag.appointment_id %></p>
                     <p>Diagnosis: <%= diag.diagnosis %></p>
-                    <p>Treatment: <%= diag.treatment %></p>
 
                     <label>Choose field to update:</label>
                     <select name="field">
                         <option value="diagnosis">Diagnosis</option>
-                        <option value="treatment">Treatment</option>
                     </select>
                     <input type="text" name="new_value" required>
                     <input type="submit" name="update" value="Update">

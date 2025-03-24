@@ -19,7 +19,7 @@
             </select><br>
             
             <label for="lab_report_id">Select the Lab Report</label>
-            <select name="lab_report_id" id="lab_report_id" required>
+            <select name="lab_report_id" id="lab_report_id">
                 <option value="">None</option>
                 <jsp:include page="helper_select_report.jsp"></jsp:include>
             </select><br>

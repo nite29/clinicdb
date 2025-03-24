@@ -202,46 +202,81 @@ public class Appointments {
     }
     
     public static int cancel_appointment(int appointment_id) {
-        String deleteAppointmentQuery = "DELETE FROM appointments WHERE appointment_id = ?";
-        String deleteLabReportQuery = "DELETE FROM lab_reports WHERE appointment_id = ?";
-        String deletePaymentsQuery = "DELETE FROM payments WHERE appointment_id = ?";
-        
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL driver
-            try (Connection conn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER, DBConnection.PASSWORD)) {
-                conn.setAutoCommit(false); // Begin transaction
+    String getLabReportQuery = "SELECT lab_report_id FROM appointments WHERE appointment_id = ?";
+    String getLabRequestQuery = "SELECT lab_request_id FROM lab_reports WHERE lab_report_id = ?";
+    String deletePaymentsQuery = "DELETE FROM payments WHERE lab_report_id = ?";
+    String deleteLabReportQuery = "DELETE FROM lab_reports WHERE lab_report_id = ?";
+    String deleteLabRequestQuery = "DELETE FROM lab_requests WHERE lab_request_id = ?";
+    String deleteAppointmentQuery = "DELETE FROM appointments WHERE appointment_id = ?";
 
-                // Delete related lab reports
-                try (PreparedStatement psLab = conn.prepareStatement(deleteLabReportQuery)) {
-                    psLab.setInt(1, appointment_id);
-                    psLab.executeUpdate();
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL driver
+        try (Connection conn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER, DBConnection.PASSWORD)) {
+            conn.setAutoCommit(false); // Begin transaction
+
+            Integer labReportId = null;
+            Integer labRequestId = null;
+
+            // Step 1: Get the associated lab_report_id
+            try (PreparedStatement psGetLabReport = conn.prepareStatement(getLabReportQuery)) {
+                psGetLabReport.setInt(1, appointment_id);
+                ResultSet rsLab = psGetLabReport.executeQuery();
+                if (rsLab.next()) {
+                    labReportId = rsLab.getInt("lab_report_id");
+                }
+            }
+
+            if (labReportId != null) {
+                // Step 2: Get the associated lab_request_id
+                try (PreparedStatement psGetLabRequest = conn.prepareStatement(getLabRequestQuery)) {
+                    psGetLabRequest.setInt(1, labReportId);
+                    ResultSet rsReq = psGetLabRequest.executeQuery();
+                    if (rsReq.next()) {
+                        labRequestId = rsReq.getInt("lab_request_id");
+                    }
                 }
 
-                // Delete related payments
+                // Step 3: Delete related payments
                 try (PreparedStatement psPay = conn.prepareStatement(deletePaymentsQuery)) {
-                    psPay.setInt(1, appointment_id);
+                    psPay.setInt(1, labReportId);
                     psPay.executeUpdate();
                 }
 
-                // Delete appointment
-                try (PreparedStatement psApp = conn.prepareStatement(deleteAppointmentQuery)) {
-                    psApp.setInt(1, appointment_id);
-                    int affectedRows = psApp.executeUpdate();
+                // Step 4: Delete lab report
+                try (PreparedStatement psLab = conn.prepareStatement(deleteLabReportQuery)) {
+                    psLab.setInt(1, labReportId);
+                    psLab.executeUpdate();
+                }
 
-                    if (affectedRows > 0) {
-                        conn.commit(); // Commit transaction
-                        return 1; // Success
-                    } else {
-                        conn.rollback(); // Rollback if no appointment was deleted
-                        return 0;
+                // Step 5: Delete lab request (if exists)
+                if (labRequestId != null) {
+                    try (PreparedStatement psLabReq = conn.prepareStatement(deleteLabRequestQuery)) {
+                        psLabReq.setInt(1, labRequestId);
+                        psLabReq.executeUpdate();
                     }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1; // Error occurred
+
+            // Step 6: Delete the appointment
+            try (PreparedStatement psApp = conn.prepareStatement(deleteAppointmentQuery)) {
+                psApp.setInt(1, appointment_id);
+                int affectedRows = psApp.executeUpdate();
+
+                if (affectedRows > 0) {
+                    conn.commit(); // Commit transaction
+                    return 1; // Success
+                } else {
+                    conn.rollback(); // Rollback if no appointment was deleted
+                    return 0;
+                }
+            }
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return -1; // Error occurred
     }
+    }
+    
 
 }
 
