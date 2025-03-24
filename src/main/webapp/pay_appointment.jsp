@@ -48,6 +48,5 @@
         %>
 
         <br>
-        <a href="appointments.jsp">🔙 Back to Appointments</a>
     </body>
 </html>
