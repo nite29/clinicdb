@@ -11,7 +11,6 @@
             int labreport = A.add_labreport(request.getParameter("lab_request_id"),
                                             request.getParameter("mrn"),
                                             request.getParameter("npi"),
-                                            request.getParameter("payment_id"),
                                             request.getParameter("findings"),
                                             request.getParameter("date"),
                                             request.getParameter("time"),

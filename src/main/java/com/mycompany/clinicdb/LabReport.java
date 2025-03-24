@@ -27,36 +27,19 @@ public class LabReport {
         String query = "INSERT INTO lab_reports (lab_request_id, mrn, npi, "
                 + "findings, lab_test_datetime, "
                 + "lab_fees, lab_results, report_status, payment_status) "
-                + "VALUES (?,?,?,?,?,?,?,?);";
+                + "VALUES (?,?,?,?,?,?,?,?,?);";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // PLS DONT REMOVE
             try {
                 Connection conn = DriverManager.getConnection(DBConnection.URL,
                         DBConnection.USER, DBConnection.PASSWORD);
                 
-                PreparedStatement ps, ps2, ps3, ps4;
-                ResultSet rs2, rs3, rs4; // note: rs doesnt exist
+                PreparedStatement ps; // note: rs doesnt exist
                 
                 //Parse html date and time inputs
                 String datetime = date + " " + time;
                 
                 // Check if lab report overlaps with another
-                ps4 = conn.prepareStatement("SELECT lrp.lab_report_id "
-                        + "FROM lab_reports lrp "
-                        + "WHERE lrp.lab_test_datetime = ? ");
-                ps4.setString(1, datetime); 
-                rs4 = ps4.executeQuery();
-                
-                if (rs4.next()){ return -1; }
-                
-                // Check if doctor is booked
-                ps3 = conn.prepareStatement("SELECT d.npi FROM doctors d "
-                        + "JOIN lab_reports lrp ON d.npi=lrp.npi "
-                        + "WHERE lrp.lab_test_datetime = ? ");
-                ps3.setString(1, datetime);
-                rs3 = ps3.executeQuery();
-                
-                if (rs3.next()){ return -2; }
                 
                 // MAIN INSERT SQL QUERY
                 ps = conn.prepareStatement(query);
