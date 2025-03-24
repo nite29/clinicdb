@@ -7,7 +7,6 @@ public class LabReport {
     public String lab_request_id = null;
     public String mrn = null;
     public String npi = null;
-    public String payment_id = null;
     public String findings = null;
     public String lab_test_datetime = null;
     public String lab_fees = null;
@@ -21,14 +20,14 @@ public class LabReport {
     // 1 : it worked
     // 0 idk wtf happened
     public static int add_labreport(String lab_request_id, String mrn, String npi,
-                                      String payment_id, String findings, String date, String time,
+                                      String findings, String date, String time,
                                       String lab_fees, String lab_results, 
                                       String report_status, String payment_status){
         // sql query
         String query = "INSERT INTO lab_reports (lab_request_id, mrn, npi, "
-                + "payment_id, findings, lab_test_datetime, "
+                + "findings, lab_test_datetime, "
                 + "lab_fees, lab_results, report_status, payment_status) "
-                + "VALUES (?,?,?,?,?,?,?,?,?,?);";
+                + "VALUES (?,?,?,?,?,?,?,?);";
         try {
             Class.forName("com.mysql.cj.jdbc.Driver"); // PLS DONT REMOVE
             try {
@@ -64,13 +63,12 @@ public class LabReport {
                 ps.setString(1, lab_request_id);
                 ps.setString(2, mrn);
                 ps.setString(3, npi);
-                ps.setString(4, payment_id);
-                ps.setString(5, findings);
-                ps.setString(6, datetime);
-                ps.setString(7, lab_fees);  
-                ps.setString(8, lab_results);
-                ps.setString(9, report_status);
-                ps.setString(10, payment_status);
+                ps.setString(4, findings);
+                ps.setString(5, datetime);
+                ps.setString(6, lab_fees);  
+                ps.setString(7, lab_results);
+                ps.setString(8, report_status);
+                ps.setString(9, payment_status);
                 
                 ps.executeUpdate();
                 return 1;
@@ -86,56 +84,51 @@ public class LabReport {
     
 
     public int cascadeDeleteLabReport(String labReportId) {
-        Connection conn = null;
-        PreparedStatement deleteLabReportStmt = null;
-        PreparedStatement deleteDiagnosisStmt = null;
-        PreparedStatement deletePaymentsStmt = null;
-    
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER, DBConnection.PASSWORD);
-            conn.setAutoCommit(false); // Start transaction
-    
-            // Delete related diagnoses
-            String deleteDiagnosisQuery = "DELETE FROM diagnosis WHERE appointment_id IN (SELECT appointment_id FROM appointments WHERE lab_report_id = ?)";
-            deleteDiagnosisStmt = conn.prepareStatement(deleteDiagnosisQuery);
-            deleteDiagnosisStmt.setString(1, labReportId);
-            deleteDiagnosisStmt.executeUpdate();
-    
-            // Delete related payments
-            String deletePaymentsQuery = "DELETE FROM payments WHERE lab_report_id = ?";
-            deletePaymentsStmt = conn.prepareStatement(deletePaymentsQuery);
-            deletePaymentsStmt.setString(1, labReportId);
-            deletePaymentsStmt.executeUpdate();
-    
-            // Now delete the lab report record
-            String deleteLabReportQuery = "DELETE FROM lab_reports WHERE lab_report_id = ?";
-            deleteLabReportStmt = conn.prepareStatement(deleteLabReportQuery);
-            deleteLabReportStmt.setString(1, labReportId);
-            int rowsAffected = deleteLabReportStmt.executeUpdate();
-    
-            conn.commit(); // Commit transaction
-    
-            return rowsAffected; // Return the number of rows affected (0 or 1)
-        } catch (Exception e) {
-            if (conn != null) {
-                try {
-                    conn.rollback(); // Rollback transaction in case of error
-                } catch (Exception rollbackEx) {
-                    rollbackEx.printStackTrace();
-                }
-            }
-            e.printStackTrace();
-            return -1; // Indicate an error occurred
-        } finally {
+    Connection conn = null;
+    PreparedStatement deletePaymentsStmt = null;
+    PreparedStatement deleteLabReportStmt = null;
+
+    try {
+        Class.forName("com.mysql.cj.jdbc.Driver"); // Ensure MySQL driver is loaded
+        conn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER, DBConnection.PASSWORD);
+        conn.setAutoCommit(false); // Start transaction
+
+        // Step 1: Delete related payments first
+        String deletePaymentsQuery = "DELETE FROM payments WHERE lab_report_id = ?";
+        deletePaymentsStmt = conn.prepareStatement(deletePaymentsQuery);
+        deletePaymentsStmt.setString(1, labReportId);
+        int paymentsDeleted = deletePaymentsStmt.executeUpdate();
+
+        // Step 2: Delete the lab report
+        String deleteLabReportQuery = "DELETE FROM lab_reports WHERE lab_report_id = ?";
+        deleteLabReportStmt = conn.prepareStatement(deleteLabReportQuery);
+        deleteLabReportStmt.setString(1, labReportId);
+        int labReportsDeleted = deleteLabReportStmt.executeUpdate();
+
+        conn.commit(); // Commit transaction
+
+        // Return total rows deleted (both from payments and lab_reports)
+        return paymentsDeleted + labReportsDeleted;
+    } catch (Exception e) {
+        if (conn != null) {
             try {
-                if (deleteLabReportStmt != null) deleteLabReportStmt.close();
-                if (deleteDiagnosisStmt != null) deleteDiagnosisStmt.close();
-                if (deletePaymentsStmt != null) deletePaymentsStmt.close();
-                if (conn != null) conn.close();
-            } catch (Exception closeEx) {
-                closeEx.printStackTrace();
+                conn.rollback(); // Rollback transaction in case of error
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
             }
         }
+        e.printStackTrace();
+        return -1; // Indicate an error occurred
+    } finally {
+        // Close resources in reverse order
+        try {
+            if (deleteLabReportStmt != null) deleteLabReportStmt.close();
+            if (deletePaymentsStmt != null) deletePaymentsStmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException closeEx) {
+            closeEx.printStackTrace();
+        }
     }
+    }
+    
 }

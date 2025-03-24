@@ -45,7 +45,6 @@
                     A.lab_request_id = rs.getString("lab_request_id");
                     A.mrn = rs.getString("mrn");
                     A.npi = rs.getString("npi");
-                    A.payment_id = rs.getString("payment_id");
                     A.findings = rs.getString("findings");
                     A.lab_test_datetime = rs.getString("lab_test_datetime");
                     A.lab_fees = rs.getString("lab_fees");
