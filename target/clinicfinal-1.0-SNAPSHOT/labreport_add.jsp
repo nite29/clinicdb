@@ -1,67 +1,82 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Add Lab Report</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <h1>Add Lab Report</h1>
-        <form action="labreport_process.jsp" method="post">
-            
-            <label for="lab_request_id" >Select the Lab Request</label>
-            <select name="lab_request_id" id="lab_request_id" required>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Lab Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <h2 class="mb-4 text-center">Add Lab Report</h2>
+    <form action="labreport_process.jsp" method="post" class="card p-4 shadow-lg">
+        
+        <div class="mb-3">
+            <label for="lab_request_id" class="form-label">Select the Lab Request</label>
+            <select name="lab_request_id" id="lab_request_id" class="form-select" required>
                 <jsp:include page="helper_select_labrequest.jsp"></jsp:include>
-            </select><br>
-            
-            <label for="mrn" >Select the Patient</label>
-            <select name="mrn" id="mrn" required>
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="mrn" class="form-label">Select the Patient</label>
+            <select name="mrn" id="mrn" class="form-select" required>
                 <jsp:include page="helper_select_patient.jsp"></jsp:include>
-            </select><br>
-            
-            <label for="npi">Select the Attending Doctor</label>
-            <select name="npi" id="npi" required>
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="npi" class="form-label">Select the Attending Doctor</label>
+            <select name="npi" id="npi" class="form-select" required>
                 <jsp:include page="helper_select_doctor.jsp"></jsp:include>
-            </select><br>
-            
-    
-            <label for="findings">Findings</label>
-            <input type="text" id="findings" name="findings" required><br>            
-
-            <!-- html date format: "YYYY-MM-DD"  -->
-            <label for="date">Enter Lab Report Date</label>
-            <input type="date" name="date" id="date" required><br>
-
-            <!-- html time format: "HH:MI"  -->
-            <!-- sql DATETIME actually has seconds "HH:MI:SS"  -->
-            <label for="time">Enter Start Time</label>
-            <input type="time" name="time" id="time" required><br>
-
-            <!-- dont forget to calculate total fees (appointment fee + lab report fee) -->
-            <!-- also html hates decimal types so just parse this string later -->
-            <label for="lab_fees">Enter Lab Fees</label>
-            <input type="number" id="lab_fees" name="lab_fees" required><br>
-            
-            <label for="lab_results">Lab Results</label>
-            <input type="text" id="lab_results" name="lab_results" ><br>
-            
-            <label for="report_status">Report Status</label>
-            <select id="report_status" name="report_status" required>
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            <label for="findings" class="form-label">Findings</label>
+            <input type="text" id="findings" name="findings" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="date" class="form-label">Enter Lab Report Date</label>
+            <input type="date" name="date" id="date" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="time" class="form-label">Enter Start Time</label>
+            <input type="time" name="time" id="time" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="lab_fees" class="form-label">Enter Lab Fees</label>
+            <input type="number" id="lab_fees" name="lab_fees" class="form-control" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="lab_results" class="form-label">Lab Results</label>
+            <input type="text" id="lab_results" name="lab_results" class="form-control">
+        </div>
+        
+        <div class="mb-3">
+            <label for="report_status" class="form-label">Report Status</label>
+            <select id="report_status" name="report_status" class="form-select" required>
                 <option value="">Select</option>
                 <option value="Pending">Pending</option>
                 <option value="Completed">Completed</option>
             </select>
-            <br>
-            
-            <label for="payment">Payment Status</label>
-            <select id="payment_status" name="payment_status" required>
+        </div>
+        
+        <div class="mb-3">
+            <label for="payment_status" class="form-label">Payment Status</label>
+            <select id="payment_status" name="payment_status" class="form-select" required>
                 <option value="">Select</option>
                 <option value="Unpaid">Unpaid</option>
                 <option value="Paid">Paid</option>
             </select>
-            <br>
-            
-            <button type="submit">Submit Lab Report</button>
-        </form>
-    </body
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">Submit Lab Report</button>
+    </form>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>
