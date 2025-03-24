@@ -23,7 +23,7 @@
 
     <h2>Delete Lab Report Record</h2>
 
-    <form method="POST" action="labreport_delete.jsp" onsubmit="return confirmDeletion();">
+    <form method="POST" action="labdelete_process.jsp" onsubmit="return confirmDeletion();">
         <label for="lab_report_id">Enter Lab Report ID:</label>
         <input type="text" id="lab_report_id" name="lab_report_id" required>
         <button type="submit">Delete</button>

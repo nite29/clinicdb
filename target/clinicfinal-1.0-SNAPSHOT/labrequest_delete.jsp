@@ -1,56 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="com.mycompany.clinicdb.Doctor" %>
+<%@ page import="java.sql.*" %>
+<%@ page import="com.mycompany.clinicdb.DBConnection" %>
 
-<jsp:useBean id="A" class="com.mycompany.clinicdb.Patient" scope="page"/>
+<%
+    // Database connection details
+
+    Connection conn = null;
+    PreparedStatement checkStmt = null;
+    PreparedStatement deleteStmt = null;
+    ResultSet rs = null;
+    
+    String message = "";
+    
+    String labRequestId = request.getParameter("lab_request_id");
+
+    if (labRequestId != null && !labRequestId.trim().isEmpty()) {
+        try {
+            int requestId = Integer.parseInt(labRequestId); // Validate input as number
+
+            conn = DriverManager.getConnection(DBConnection.URL, DBConnection.USER, DBConnection.PASSWORD);
+
+            // Check if the lab request is linked to any lab report
+            String checkQuery = "SELECT COUNT(*) FROM lab_reports WHERE lab_request_id = ?";
+            checkStmt = conn.prepareStatement(checkQuery);
+            checkStmt.setInt(1, requestId);
+            rs = checkStmt.executeQuery();
+
+            if (rs.next() && rs.getInt(1) > 0) {
+                message = "<p style='color: red;'>Cannot delete: This Lab Request is linked to a Lab Report.</p>";
+            } else {
+                // Proceed with deletion if no lab report is linked
+                String deleteQuery = "DELETE FROM lab_requests WHERE lab_request_id = ?";
+                deleteStmt = conn.prepareStatement(deleteQuery);
+                deleteStmt.setInt(1, requestId);
+
+                int rowsDeleted = deleteStmt.executeUpdate();
+                if (rowsDeleted > 0) {
+                    message = "<p style='color: green;'>Lab Request deleted successfully.</p>";
+                } else {
+                    message = "<p style='color: red;'>Lab Request not found.</p>";
+                }
+            }
+        } catch (NumberFormatException e) {
+            message = "<p style='color: red;'>Invalid Lab Request ID. Please enter a valid number.</p>";
+        } catch (SQLException e) {
+            message = "<p style='color: red;'>Database error: " + e.getMessage() + "</p>";
+        } finally {
+            try { if (rs != null) rs.close(); } catch (SQLException ignored) {}
+            try { if (checkStmt != null) checkStmt.close(); } catch (SQLException ignored) {}
+            try { if (deleteStmt != null) deleteStmt.close(); } catch (SQLException ignored) {}
+            try { if (conn != null) conn.close(); } catch (SQLException ignored) {}
+        }
+    }
+%>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Delete Patient Record</title>
-    <script>
-        function confirmDeletion() {
-            let firstConfirm = confirm("Are you sure you want to delete this patient record?");
-            if (firstConfirm) {
-                let secondConfirm = confirm("This action cannot be undone. Are you absolutely sure?");
-                return secondConfirm; // Only submits if the second confirmation is also OK
-            }
-            return false;
-        }
-    </script>
+    <title>Delete Lab Request</title>
 </head>
 <body>
 
-    <h2>Delete Patient Record</h2>
+    <h2>Delete Lab Request</h2>
 
-    <form method="POST" action="patient_delete.jsp" onsubmit="return confirmDeletion();">
-        <label for="mrn">Enter Patient's MRN:</label>
-        <input type="text" id="mrn" name="mrn" required>
+    <form method="POST">
+        <label for="lab_request_id">Enter Lab Request ID:</label>
+        <input type="number" id="lab_request_id" name="lab_request_id" required>
         <button type="submit">Delete</button>
     </form>
 
     <hr>
 
-    <%
-        String mrn = request.getParameter("mrn");
-
-        if (mrn != null && !mrn.trim().isEmpty()) {
-            int result = A.deletePatient(mrn);
-            
-            if (result == 1) {
-    %>
-                <p style="color: green;">Patient record deleted successfully.</p>
-    <%
-            } else if (result == 0) {
-    %>
-                <p style="color: red;">No patient found with the given MRN.</p>
-    <%
-            } else {
-    %>
-                <p style="color: red;">An error occurred while deleting the record.</p>
-    <%
-            }
-        }
-    %>
+    <%= message %>
 
 </body>
 </html>

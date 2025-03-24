@@ -34,19 +34,19 @@
             if (rowsAffected > 0) {
 %>
                 <p style="color: green;">Lab request added successfully!</p>
-%>
+<%
             } else {
 %>
                 <p style="color: red;">Failed to add lab request. Please try again.</p>
-%>
+<%
             }
         } catch (Exception e) {
             e.printStackTrace();
 %>
             <p style="color: red;">Error: <%= e.getMessage() %></p>
 <%
-        }
-    } else {
+        }  // **Missing bracket added here**
+    } else {  // **This else belongs to the first if condition**
 %>
         <p style="color: red;">All fields are required.</p>
 <%

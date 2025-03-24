@@ -24,10 +24,6 @@
                 <jsp:include page="helper_select_doctor.jsp"></jsp:include>
             </select><br>
             
-            <label for="payment_id">Select the Payment</label>
-            <select name="payment_id" id="payment_id">
-                <jsp:include page="helper_select_payment.jsp"></jsp:include>
-            </select><br>
     
             <label for="findings">Findings</label>
             <input type="text" id="findings" name="findings" required><br>            
