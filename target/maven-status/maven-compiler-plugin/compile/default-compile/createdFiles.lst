@@ -1,0 +1,9 @@
+com\mycompany\clinicfinal\resources\JakartaEE10Resource.class
+com\mycompany\clinicdb\Patient.class
+com\mycompany\clinicdb\LabReport.class
+com\mycompany\clinicdb\DBConnection.class
+com\mycompany\clinicdb\Appointments.class
+com\mycompany\clinicdb\Diagnosis.class
+com\mycompany\clinicdb\Doctor.class
+com\mycompany\clinicdb\LabRequest.class
+com\mycompany\clinicfinal\JakartaRestConfiguration.class
