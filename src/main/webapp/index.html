@@ -1,47 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0faf0; /* Light green background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff; /* White container */
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh; /* Limit height to 80% of viewport */
+            overflow-y: auto; /* Make it scrollable */
+        }
+        h1 {
+            color: #2e7d32; /* Dark green heading */
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        .section {
+            margin-bottom: 1.5rem;
+        }
+        .section h2 {
+            color: #388e3c; /* Medium green subheading */
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .links a {
+            text-decoration: none;
+            color: #2e7d32; /* Dark green text */
+            background-color: #e8f5e9; /* Light green background */
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            text-align: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .links a:hover {
+            background-color: #2e7d32; /* Dark green hover */
+            color: #ffffff; /* White text on hover */
+        }
+    </style>
 </head>
 <body>
-    <a href="appointment_view.jsp">View Appointment</a><br>
-    <a href="appointment_add.jsp">Add Appointment</a><br>
-    <a href="appointment_update.jsp">Update Appointment</a><br>
-    <a href="pay_appointment.jsp">Pay Appointment</a><br>
-    <a href="appointment_cancel.jsp">Cancel Appointment</a><br><br>
+    <div class="container">
+        <h1>Home Page</h1>
 
-    <a href="doctor_add.jsp">Add Doctor</a><br>
-    <a href="doctor_view.jsp">Search Doctor</a><br>
-    <a href="doctor_update.jsp">Update Doctor</a><br>
-    <a href="doctor_delete.jsp">Delete Doctor</a><br><br>
-    <a href="diagnosis_add.jsp">Add Diagnosis</a><br>
-    <a href="diagnosis_view.jsp">View Diagnosis</a><br>
-    <a href="treatment_add.jsp">add treatment</a><br>
-    <a href="diagnosis_update.jsp">Update Diagnosis</a><br><br>
-    <a href="patient_add.jsp">Add Patients</a><br>
-    <a href="patient_view.jsp">Search Patients</a><br>
-    <a href="patient_update.jsp">Update Patients</a><br>
-    <a href="patient_delete.jsp">Delete Patients</a><br><br>
+        <div class="section">
+            <h2>Appointment Management</h2>
+            <div class="links">
+                <a href="appointment_view.jsp">View Appointment</a>
+                <a href="appointment_add.jsp">Add Appointment</a>
+                <a href="appointment_update.jsp">Update Appointment</a>
+                <a href="appointment_cancel.jsp">Cancel Appointment</a>
+                <a href="pay_appointment.jsp">Pay Appointment</a>
+            </div>
+        </div>
 
-    <a href="labreport_add.jsp">Add Lab Report</a><br>
-    <a href="labreport_view.jsp">Search Lab Reports</a><br>
-    <a href="labreport_update.jsp">Update Lab Report</a><br>
-    <a href="labreport_delete.jsp">Delete Lab Report</a><br><br>
-    <a href="labrequest_add.jsp">Add Lab Request</a><br>
-    <a href="labrequest_view.jsp">Search Lab Request</a><br>
-    <a href="labrequest_update.jsp">Update Lab Request</a><br>
-    <a href="labrequest_delete.jsp">Delete Lab Request</a><br><br>  
-    
-    <a href="total_patients.jsp">Total Number of patients per doctor</a><br> 
-    <a href="total_appointments.jsp">Total Number of appointments per doctor</a><br> 
-    <a href="average_YOS.jsp">Average years of service</a><br><br> 
-    
-    <a href="lab_reports_total.jsp">Number of lab test</a><br> 
-    <a href="lab_reports_common.jsp">Common lab test request</a><br> 
-    <a href="lab_reports_pending.jsp">Lab test with pending results</a><br><br> 
-    
-    <a href="treatments_issued.jsp">Number of prescriptions</a><br> 
-    <a href="treatment_top.jsp">Most frequently prescribed medications</a><br>
-    <a href="average_medications_report.jsp">average number of medications per diagnosis</a><br>
+        <div class="section">
+            <h2>Doctor Management</h2>
+            <div class="links">
+                <a href="doctor_add.jsp">Add Doctor</a>
+                <a href="doctor_view.jsp">Search Doctor</a>
+                <a href="doctor_update.jsp">Update Doctor</a>
+                <a href="doctor_delete.jsp">Delete Doctor</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Diagnosis Management</h2>
+            <div class="links">
+                <a href="diagnosis_add.jsp">Add Diagnosis</a>
+                <a href="diagnosis_view.jsp">View Diagnosis</a>
+                <a href="diagnosis_update.jsp">Update Diagnosis</a>
+                <a href="treatment_add.jsp">Add Treatment</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Patient Management</h2>
+            <div class="links">
+                <a href="patient_add.jsp">Add Patients</a>
+                <a href="patient_view.jsp">Search Patients</a>
+                <a href="patient_update.jsp">Update Patients</a>
+                <a href="patient_delete.jsp">Delete Patients</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Lab Report Management</h2>
+            <div class="links">
+                <a href="labreport_add.jsp">Add Lab Report</a>
+                <a href="labreport_view.jsp">Search Lab Reports</a>
+                <a href="labreport_update.jsp">Update Lab Report</a>
+                <a href="labreport_delete.jsp">Delete Lab Report</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Lab Request Management </h2>
+            <div class="links">
+                <a href="labrequest_add.jsp">Add Lab Request</a>
+                <a href="labrequest_view.jsp">Search Lab Request</a>
+                <a href="labrequest_update.jsp">Update Lab Request</a>
+                <a href="labrequest_delete.jsp">Delete Lab Request</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Reports</h2>
+            <div class="links">
+                <h4>Doctor Performance Report</h4>
+                <a href="total_patients.jsp">Total Number of Patients per Doctor</a>
+                <a href="total_appointments.jsp">Total Number of Appointments per Doctor</a>
+                <a href="average_YOS.jsp">Average Years of Service</a>
+                <h4>Lab Test Analysis Report</h4>
+                <a href="lab_reports_total.jsp">Number of Lab Tests</a>
+                <a href="lab_reports_common.jsp">Common Lab Test Requests</a>
+                <a href="lab_reports_pending.jsp">Lab Tests with Pending Results</a>
+                <h4>Monthly Prescription Analysis Report</h4>
+                <a href="treatments_issued.jsp">Number of Prescriptions</a>
+                <a href="treatment_top.jsp">Most Frequently Prescribed Medications</a>
+                <a href="average_medications_report.jsp">Average Number of Medications per Diagnosis</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
