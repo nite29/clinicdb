@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`patients` (
   PRIMARY KEY (`mrn`),
   UNIQUE INDEX `mrn_UNIQUE` (`mrn` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
+AUTO_INCREMENT = 11
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`doctors` (
   PRIMARY KEY (`npi`),
   UNIQUE INDEX `npi_UNIQUE` (`npi` ASC) VISIBLE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`lab_requests` (
     FOREIGN KEY (`npi`)
     REFERENCES `clinic`.`doctors` (`npi`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 15
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -105,6 +105,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`payments` (
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -145,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`lab_reports` (
     ON DELETE RESTRICT
     ON UPDATE RESTRICT)
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
+AUTO_INCREMENT = 9
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -177,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`appointments` (
     FOREIGN KEY (`npi`)
     REFERENCES `clinic`.`doctors` (`npi`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -223,33 +224,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`diagnosis` (
     FOREIGN KEY (`appointment_id`)
     REFERENCES `clinic`.`appointments` (`appointment_id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
-DEFAULT CHARACTER SET = utf8mb3;
-
-
--- -----------------------------------------------------
--- Table `clinic`.`prescriptions`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinic`.`prescriptions` (
-  `prescription_id` INT NOT NULL AUTO_INCREMENT,
-  `mrn` INT NOT NULL,
-  `npi` INT NOT NULL,
-  `medication_name` VARCHAR(45) NOT NULL,
-  `dosage` DOUBLE NOT NULL,
-  `frequency` VARCHAR(45) NOT NULL,
-  `duration` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`prescription_id`),
-  UNIQUE INDEX `prescription_id_UNIQUE` (`prescription_id` ASC) VISIBLE,
-  INDEX `idx_doctors_npi` (`npi` ASC) INVISIBLE,
-  INDEX `idx_patients_mrn` (`mrn` ASC) VISIBLE,
-  CONSTRAINT `fk_prescriptions_mrn`
-    FOREIGN KEY (`mrn`)
-    REFERENCES `clinic`.`patients` (`mrn`),
-  CONSTRAINT `fk_prescriptions_npi`
-    FOREIGN KEY (`npi`)
-    REFERENCES `clinic`.`doctors` (`npi`))
-ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -268,7 +243,7 @@ CREATE TABLE IF NOT EXISTS `clinic`.`treatment` (
     FOREIGN KEY (`diagnosis_id`)
     REFERENCES `clinic`.`diagnosis` (`diagnosis_id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8mb3;
 
 

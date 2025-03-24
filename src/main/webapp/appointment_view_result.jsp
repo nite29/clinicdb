@@ -38,42 +38,33 @@
                 ArrayList<Appointments> appointmentsList = new ArrayList<>();
 
                 if (category != null && value != null) {
-                    appointmentsList = A.view_appointment(category, value); // Ensure this returns an ArrayList<Appointments>
+                    appointmentsList = A.view_appointment(category, value); // Fetch appointments from DB
                 }
 
                 for (Appointments appt : appointmentsList) { 
             %>
                 <tr>
                     <td><%= appt.appointment_id %></td>
-                        <td><%= appt.patient_name %></td>
-                        <td><%= appt.sex %></td>
-                        <td><%= appt.birth_date %></td>
-                        <td><%= appt.contact_no %></td>
-                        <td><%= appt.attending_doctor %></td>
-                        <td><%= appt.specialization %></td>
-                        <td><%= appt.purpose %></td>
-                        <td><%= appt.start_datetime %></td>
-                        <td><%= appt.end_datetime %></td>
-                        <td><%= appt.lab_report_status %></td>
-                        <td><%= appt.appointment_fees %></td>
-                        <td><%= appt.lab_fees %></td>
-                        <td><%= appt.total_fees %></td>
-                        <td><%= appt.payment_status %></td>
+                    <td><%= appt.patient_name %></td>
+                    <td><%= appt.sex %></td>
+                    <td><%= appt.birth_date %></td>
+                    <td><%= appt.contact_no %></td>
+                    <td><%= appt.attending_doctor %></td>
+                    <td><%= appt.specialization %></td>
+                    <td><%= appt.purpose %></td>
+                    <td><%= appt.start_datetime %></td>
+                    <td><%= appt.end_datetime %></td>
+                    <td><%= (appt.lab_report_status != null) ? appt.lab_report_status : "No Report" %></td>
+                    <td><%= appt.appointment_fees %></td>
+                    <td><%= appt.lab_fees %></td>
+                    <td><%= appt.total_fees %></td>
+                    <td><%= appt.payment_status %></td>
                 </tr>
             <%
                 }
             %>
         </table> <br>
         
-        <label for="appointment_id">Select Appointment:</label>
-        <select name="appointment_id" id="appointment_id" required>
-            <% for (Appointments appt : appointmentsList) { %>
-                <option value="<%= appt.appointment_id %>"><%= appt.appointment_id %></option>
-            <% } %>
-        </select>
-        <label for="amount_paid">Enter Amount Paid</label>
-            <input type="text" name="amount_paid" id="amount_paid" required><br>
             
-        <button type="submit">Proceed to Payment</button>
     </body>
 </html>

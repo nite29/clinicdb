@@ -10,7 +10,7 @@
         <form action="appointment_update_process.jsp" method="post">
             <label for="appointment_id" >Select Appointment</label>
             <select name="appointment_id" id="appointment_id" required>
-                <jsp:include page="helper_select_appointment.jsp"></jsp:include>
+                <jsp:include page="helper_select_appointment2.jsp"></jsp:include>
             </select><br>
             <button type="submit">Choose Appointment</button>
         </form>
