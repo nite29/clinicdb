@@ -229,6 +229,32 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
+-- Table `clinic`.`prescriptions`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `clinic`.`prescriptions` (
+  `prescription_id` INT NOT NULL AUTO_INCREMENT,
+  `mrn` INT NOT NULL,
+  `npi` INT NOT NULL,
+  `medication_name` VARCHAR(45) NOT NULL,
+  `dosage` DOUBLE NOT NULL,
+  `frequency` VARCHAR(45) NOT NULL,
+  `duration` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`prescription_id`),
+  UNIQUE INDEX `prescription_id_UNIQUE` (`prescription_id` ASC) VISIBLE,
+  INDEX `idx_doctors_npi` (`npi` ASC) INVISIBLE,
+  INDEX `idx_patients_mrn` (`mrn` ASC) VISIBLE,
+  CONSTRAINT `fk_prescriptions_mrn`
+    FOREIGN KEY (`mrn`)
+    REFERENCES `clinic`.`patients` (`mrn`),
+  CONSTRAINT `fk_prescriptions_npi`
+    FOREIGN KEY (`npi`)
+    REFERENCES `clinic`.`doctors` (`npi`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8mb3;
+
+
+-- -----------------------------------------------------
 -- Table `clinic`.`treatment`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `clinic`.`treatment` (
